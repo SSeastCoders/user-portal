@@ -1,0 +1,1 @@
+export const USER_URL = `${process.env.REACT_APP_USER_ENDPOINT}`;
