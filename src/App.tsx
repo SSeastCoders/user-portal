@@ -1,10 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Login } from './pages/Login';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Register } from './pages/Register';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { Home } from './pages/Home';
 
 const queryClient = new QueryClient();
 
@@ -21,6 +21,9 @@ function App() {
           </Route>
           <Route exact path="/register">
             <Register></Register>
+          </Route>
+          <Route exact path="/home">
+            <Home></Home>
           </Route>
         </Switch>
       </Router >

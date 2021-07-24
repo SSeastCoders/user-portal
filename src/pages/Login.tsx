@@ -1,9 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import * as Yup from 'yup'
 
 interface loginProps {
 
 }
+
+const schema = Yup.object().shape({
+  username: Yup.string()
+});
+
 
 export const Login: React.FC<loginProps> = () => {
   // @ts-ignore: Object is possibly 'null'.
@@ -19,7 +25,7 @@ export const Login: React.FC<loginProps> = () => {
           <div className="card-body login-card-body">
             <p className="login-box-msg">Sign in to start your session</p>
 
-            <form action="../../index3.html" method="post">
+            <form action="../../index3.html" method="post" noValidate>
               <div className="input-group mb-3">
                 <input type="email" className="form-control" placeholder="Email" autoComplete="off" />
                 <div className="input-group-append">

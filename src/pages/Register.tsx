@@ -10,33 +10,34 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { USER_URL } from '../services/api';
 import { ResErrorObj } from '../services/responses/ResErrorObj';
-
+import { LoginForm } from '../services/responses/LoginForm';
+import AppButton from '../components/button/AppButton';
 
 interface RegisterProps {
 
 }
 
 type FormValues = {
-  username: String;
-  password: String;
-  confirmPassword: String;
-  email: String;
+  username: string;
+  password: string;
+  confirmPassword: string;
+  email: string;
   checked: Boolean;
 }
 
-
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{7,}$/;
 
+// schema to validate form memebers
 const schema = Yup.object().shape({
   username: Yup.string().matches(/^[a-z0-9A-Z]+$/, "username must be alphanumeric")
     .min(4, "username must be greater than 4 characters")
     .max(20, "username must less than 20 characters")
     .required(),
   password: Yup.string()
+    .required()
     .matches(PASSWORD_REGEX, "Password must contain a number, uppercase and be 7 characters long")
-    .max(20, "Password must be less than 20 characters")
-    .required(),
-  confirmPassword: Yup.string().when("password", {
+    .max(20, "Password must be less than 20 characters"),
+  confirmPassword: Yup.string().required().when("password", {
     is: (val: any) => (val && val.length > 0 ? true : false),
     then: Yup.string().oneOf([Yup.ref("password")], "Password does not match")
   }),
@@ -44,73 +45,110 @@ const schema = Yup.object().shape({
   checked: Yup.bool().isTrue("Must agree to terms")
 });
 
+/**
+ * A Registration page component to register a user
+ * @param param0 props to pass
+ * @returns renders the register page
+ */
 export const Register: React.FC<RegisterProps> = ({ }) => {
 
   const history = useHistory();
-  const mutation = useMutation((user: FormValues) => axios.post(USER_URL, user));
-  const { register, handleSubmit, formState: { errors: formErrors } } = useForm<FormValues>({
+
+  //hook that sends a post to create a user.
+  const createUserMutation = useMutation((user: FormValues) => axios.post(USER_URL + "/users", user), {
+    onSuccess: () => login(getValues())
+  });
+
+  //hook that sends a post to endpoint login to authenticate
+  const loginMutation = useMutation((loginInfo: LoginForm) => axios.post(USER_URL + "/login", loginInfo), {
+  onSuccess: ({headers}) => { 
+      // TODO add storage of token
+      // console.log(headers);
+      history.push("/home") 
+    }
+  });
+
+  // Form validator
+  const { register, handleSubmit, getValues, formState: { errors: formErrors } } = useForm<FormValues>({
     resolver: yupResolver(schema)
   });
-  const errorRes: ResErrorObj = mutation.error as any;
+
+  //Error response objects
+  const errorRes: ResErrorObj = createUserMutation.error as any;
+  const loginErrRes: ResErrorObj = loginMutation.error as any;
+
+  let isLoading = createUserMutation.isLoading || loginMutation.isLoading;
+
+  /**
+   * Sends form data when submit button is pressed
+   * @param data form data to submit
+   */
   const onSubmit = (data: FormValues) => {
-    mutation.mutate(data);
-    // history.push("/home"); 
+    createUserMutation.mutate(data);
   };
+  /**
+   * Sends in login information to server to authenticate
+   * @param data Login form data
+   */
+  const login = async (data: LoginForm) => {
+    const loginData = new LoginForm(data.username, data.password);
+    loginMutation.mutate(loginData);
+  };
+
+  /**
+   * Function that displays error messages from server
+   * @returns error response message from server on top of form
+   */
+  const renderError = () => {
+    if (createUserMutation.isError && errorRes.response !== undefined) {
+      return <div className="text-center invalid-feedback d-block">{errorRes.response.data.message}</div>;
+    } else if (loginMutation.isError && loginErrRes.response !== undefined) {
+      return <div className="text-center invalid-feedback d-block">{loginErrRes.response.data.message}</div>;
+    }
+  };
+
+  let checkboxInvalid = !('checked' in formErrors) ? "" : "text-danger";
   return (
     <div className="register-page">
       <div className="register-box">
         <div className="register-logo">
           <Link to="/"><b>EastCoders </b>Bank</Link>
         </div>
-
         <div className="card">
           <div className="card-body register-card-body">
             <p className="login-box-msg">Register a new account</p>
-
             <form onSubmit={handleSubmit(onSubmit)}>
-              {mutation.isError ? (                  
-                <div className="text-center text-danger">{errorRes.response.data.message}</div>
-              ) : null}
+              {renderError()}
               <InputValidation className="mb-3" errors={formErrors} favIcon="fas fa-user" name="username" register={register("username")}></InputValidation>
               <InputValidation className="mb-3" errors={formErrors} favIcon="fas fa-envelope" name="email" register={register("email")}></InputValidation>
               <InputPasswordToggle className="mb-3" errors={formErrors} name="password" register={register("password")}></InputPasswordToggle>
               <InputPasswordToggle className="mb-3" errors={formErrors} name="confirmPassword" register={register("confirmPassword")}></InputPasswordToggle>
               <div className="row">
-                <div className="col-8">
+                <div className="col-7">
                   <div className="icheck-primary">
                     <input type="checkbox" id="agreeTerms" {...register("checked")} />
-                    <label htmlFor="agreeTerms">
+                    <label className={checkboxInvalid} htmlFor="agreeTerms">
                       I agree to the <a href="#">terms</a>
                     </label>
                   </div>
-                  <ErrorMessage className="text-danger" as="div" name="checked" errors={formErrors}></ErrorMessage>
+                  <ErrorMessage className="invalid-feedback d-block" as="span" name="checked" errors={formErrors}></ErrorMessage>
                 </div>
-                {/*
-              <!-- /.col --> */}
-                <div className="col-4">
-                  <button type="submit" className="btn btn-primary btn-block">Register</button>
+                <div className="col-5">
+                  <AppButton block type="submit" isLoading={isLoading}>
+                    Register
+                  </AppButton>
                 </div>
-                {/*
-              <!-- /.col --> */}
               </div>
             </form>
 
             <div className="social-auth-links text-center">
               <p>- OR -</p>
-              <a href="#" className="btn btn-block btn-primary">
-                <i className="fab fa-facebook mr-2"></i>
-                Sign up using Facebook
-              </a>
-              <a href="#" className="btn btn-block btn-danger">
-                <i className="fab fa-google-plus mr-2"></i>
-                Sign up using Google+
-              </a>
+              <AppButton block disabled={isLoading} icon="fab fa-facebook">Sign up using Facebook </AppButton>
+              <AppButton block disabled={isLoading} icon="fab fa-google" theme="danger">Sign up using Google</AppButton>
             </div>
 
             <Link to="/login">I already have an account</Link>
           </div>
-          {/*
-        <!-- /.form-box --> */}
         </div>
       </div>
     </div>
