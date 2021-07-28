@@ -1,1 +1,1 @@
-export const USER_URL = `${process.env.REACT_APP_USER_ENDPOINT}`;
+export const BASE_URL = `${process.env.REACT_APP_USER_ENDPOINT}`;

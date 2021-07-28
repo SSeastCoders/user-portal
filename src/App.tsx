@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import { Register } from './pages/Register';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Home } from './pages/Home';
+import PublicRoute from './routes/PublicRoute';
+import PrivateRoute from './routes/PrivateRoute';
 
 const queryClient = new QueryClient();
 
@@ -14,17 +16,17 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/login"></Redirect>
+            <Redirect to="/home"></Redirect>
           </Route>
-          <Route exact path="/login">
+          <PublicRoute exact path="/login">
             <Login></Login>
-          </Route>
-          <Route exact path="/register">
+          </PublicRoute>
+          <PublicRoute exact path="/register">
             <Register></Register>
-          </Route>
-          <Route exact path="/home">
+          </PublicRoute>
+          <PrivateRoute path="/home">
             <Home></Home>
-          </Route>
+          </PrivateRoute>
         </Switch>
       </Router >
     </QueryClientProvider >

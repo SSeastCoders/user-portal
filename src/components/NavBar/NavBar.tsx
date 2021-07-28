@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import UserProfileNav from './UserProfileNav';
 
 interface NavBarProps {
 
@@ -47,6 +48,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         </div>
       </form>
       <ul className="navbar-nav ml-auto">
+        <UserProfileNav></UserProfileNav>
         {/* <Messages />
         <Notifications />
         <User /> */}

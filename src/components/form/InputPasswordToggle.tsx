@@ -4,21 +4,22 @@ import { DeepMap, FieldError, FieldValues, UseFormRegisterReturn } from 'react-h
 import classNames from 'classnames'
 
 interface InputPasswordToggleProps {
-  className: string,
+  className?: string,
   register: UseFormRegisterReturn,
   name: string,
+  placeholder?: string,
   errors: DeepMap<FieldValues, FieldError>
 }
 
-export const InputPasswordToggle: React.FC<InputPasswordToggleProps> = ({ className, register, name, errors }) => {
+export const InputPasswordToggle: React.FC<InputPasswordToggleProps> = ({ className, register, name, errors, placeholder }) => {
   const [visibility, setVisbility] = useState(false);
   let favIcon: string = visibility ? "fas fa-lock-open" : "fas fa-lock";
   let type : string = visibility ? "text" : "password";
-  let inputerror = !(name in errors) ? "" : "is-invalid";
+  let inputerror = (name in errors) ? "is-invalid" : "";
   return (
     <div className={className}>
       <div className="input-group">
-        <input type={type} className={classNames("form-control", inputerror)} placeholder={name} {...register} />
+        <input type={type} className={classNames("form-control", inputerror)} placeholder={placeholder} {...register} />
         <div className="input-group-append">
           <div className="input-group-text">
             <span onClick={() => setVisbility(!visibility)} className={favIcon}></span>

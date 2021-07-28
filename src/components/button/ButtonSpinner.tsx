@@ -8,7 +8,7 @@ interface AppButtonProps extends ButtonProps {
   theme?: string;
 }
 
-const AppButton: React.FC<AppButtonProps> = ({
+const ButtonSpinner: React.FC<AppButtonProps> = ({
   children,
   isLoading,
   icon,
@@ -37,9 +37,7 @@ const AppButton: React.FC<AppButtonProps> = ({
   }
 
   return (
-    // eslint-disable-next-line react/button-has-type
     <Button
-
       {...otherProps}
       variant={theme}
       disabled={isLoading || disabled}
@@ -51,4 +49,4 @@ const AppButton: React.FC<AppButtonProps> = ({
   );
 };
 
-export default AppButton;
+export default ButtonSpinner;

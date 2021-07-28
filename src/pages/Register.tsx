@@ -8,10 +8,12 @@ import { InputValidation } from '../components/form/InputValidation';
 import { InputPasswordToggle } from '../components/form/InputPasswordToggle';
 import { useMutation } from 'react-query';
 import axios from 'axios';
-import { USER_URL } from '../services/api';
+import { BASE_URL } from '../services/api';
 import { ResErrorObj } from '../services/responses/ResErrorObj';
-import { LoginForm } from '../services/responses/LoginForm';
-import AppButton from '../components/button/AppButton';
+import { LoginForm } from '../services/formdata/LoginForm';
+import ButtonSpinner from '../components/button/ButtonSpinner';
+import {useDispatch} from 'react-redux';
+import * as ActionTypes from '../store/action/actiontypes';
 
 interface RegisterProps {
 
@@ -37,7 +39,7 @@ const schema = Yup.object().shape({
     .required()
     .matches(PASSWORD_REGEX, "Password must contain a number, uppercase and be 7 characters long")
     .max(20, "Password must be less than 20 characters"),
-  confirmPassword: Yup.string().required().when("password", {
+  confirmPassword: Yup.string().required("confirm password is a required field").when("password", {
     is: (val: any) => (val && val.length > 0 ? true : false),
     then: Yup.string().oneOf([Yup.ref("password")], "Password does not match")
   }),
@@ -54,17 +56,24 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
 
   const history = useHistory();
 
+  const dispatch = useDispatch();
+  
+
   //hook that sends a post to create a user.
-  const createUserMutation = useMutation((user: FormValues) => axios.post(USER_URL + "/users", user), {
+  const createUserMutation = useMutation((user: FormValues) => axios.post(BASE_URL + "/users", user), {
     onSuccess: () => login(getValues())
   });
 
   //hook that sends a post to endpoint login to authenticate
-  const loginMutation = useMutation((loginInfo: LoginForm) => axios.post(USER_URL + "/login", loginInfo), {
+  const loginMutation = useMutation((loginInfo: LoginForm) => axios.post(BASE_URL + "/login", loginInfo), {
   onSuccess: ({headers}) => { 
       // TODO add storage of token
+      dispatch({ type: ActionTypes.LOGIN_USER, token: headers.Authorization, id: headers.id})
       // console.log(headers);
       history.push("/home") 
+    },
+    onError: () => {
+      history.push("/login");
     }
   });
 
@@ -112,17 +121,17 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
     <div className="register-page">
       <div className="register-box">
         <div className="register-logo">
-          <Link to="/"><b>EastCoders </b>Bank</Link>
+          <b>EastCoders </b>Bank
         </div>
         <div className="card">
           <div className="card-body register-card-body">
             <p className="login-box-msg">Register a new account</p>
             <form onSubmit={handleSubmit(onSubmit)}>
               {renderError()}
-              <InputValidation className="mb-3" errors={formErrors} favIcon="fas fa-user" name="username" register={register("username")}></InputValidation>
-              <InputValidation className="mb-3" errors={formErrors} favIcon="fas fa-envelope" name="email" register={register("email")}></InputValidation>
-              <InputPasswordToggle className="mb-3" errors={formErrors} name="password" register={register("password")}></InputPasswordToggle>
-              <InputPasswordToggle className="mb-3" errors={formErrors} name="confirmPassword" register={register("confirmPassword")}></InputPasswordToggle>
+              <InputValidation className="mb-3" errors={formErrors} favIcon="fas fa-user" name="username" placeholder="username" register={register("username")}></InputValidation>
+              <InputValidation className="mb-3" errors={formErrors} favIcon="fas fa-envelope" name="email" placeholder="email" register={register("email")}></InputValidation>
+              <InputPasswordToggle className="mb-3" errors={formErrors} name="password" placeholder="password" register={register("password")}></InputPasswordToggle>
+              <InputPasswordToggle className="mb-3" errors={formErrors} name="confirmPassword" placeholder="confirm password" register={register("confirmPassword")}></InputPasswordToggle>
               <div className="row">
                 <div className="col-7">
                   <div className="icheck-primary">
@@ -134,17 +143,17 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
                   <ErrorMessage className="invalid-feedback d-block" as="span" name="checked" errors={formErrors}></ErrorMessage>
                 </div>
                 <div className="col-5">
-                  <AppButton block type="submit" isLoading={isLoading}>
+                  <ButtonSpinner block type="submit" isLoading={isLoading}>
                     Register
-                  </AppButton>
+                  </ButtonSpinner>
                 </div>
               </div>
             </form>
 
             <div className="social-auth-links text-center">
               <p>- OR -</p>
-              <AppButton block disabled={isLoading} icon="fab fa-facebook">Sign up using Facebook </AppButton>
-              <AppButton block disabled={isLoading} icon="fab fa-google" theme="danger">Sign up using Google</AppButton>
+              <ButtonSpinner block disabled={isLoading} icon="fab fa-facebook">Sign up using Facebook </ButtonSpinner>
+              <ButtonSpinner block disabled={isLoading} icon="fab fa-google" theme="danger">Sign up using Google</ButtonSpinner>
             </div>
 
             <Link to="/login">I already have an account</Link>
