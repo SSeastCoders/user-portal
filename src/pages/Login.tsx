@@ -35,7 +35,7 @@ export const Login: React.FC<loginProps> = () => {
       console.log(headers);
       dispatch({ type: ActionTypes.LOGIN_USER, token: headers.authorization, id: headers.id })
       //create store token
-      history.push("/home");
+      history.push("/dashboard");
     }
   });
 

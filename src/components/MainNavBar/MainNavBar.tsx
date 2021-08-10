@@ -6,7 +6,7 @@ interface NavBarProps {
 
 }
 
-export const NavBar: React.FC<NavBarProps> = ({}) => {
+export const MainNavBar: React.FC<NavBarProps> = ({}) => {
   return (
     <nav className="main-header navbar navbar-expand navbar-white navbar-light">
       {/* Left navbar links */}
@@ -22,13 +22,13 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
           </button>
         </li>
         <li className="nav-item d-none d-sm-inline-block">
-          <Link to="/home" className="nav-link">
+          <Link to="/dashboard" className="nav-link">
             Home
           </Link>
         </li>
         <li className="nav-item d-none d-sm-inline-block">
-          <Link to="/home" className="nav-link">
-            Contact
+          <Link to="/dashboard/accountOpening" className="nav-link">
+            Open an account
           </Link>
         </li>
       </ul>

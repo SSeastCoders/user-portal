@@ -4,9 +4,9 @@ import { Login } from './pages/Login';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Register } from './pages/Register';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Home } from './pages/Home';
 import PublicRoute from './routes/PublicRoute';
 import PrivateRoute from './routes/PrivateRoute';
+import { DashBoard } from './pages/DashBoard';
 
 const queryClient = new QueryClient();
 
@@ -16,7 +16,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/home"></Redirect>
+            <Redirect to="/dashboard"></Redirect>
           </Route>
           <PublicRoute exact path="/login">
             <Login></Login>
@@ -24,8 +24,8 @@ function App() {
           <PublicRoute exact path="/register">
             <Register></Register>
           </PublicRoute>
-          <PrivateRoute path="/home">
-            <Home></Home>
+          <PrivateRoute path="/dashboard">
+            <DashBoard></DashBoard>
           </PrivateRoute>
         </Switch>
       </Router >

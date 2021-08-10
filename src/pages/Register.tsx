@@ -70,7 +70,7 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
       // TODO add storage of token
       dispatch({ type: ActionTypes.LOGIN_USER, token: headers.Authorization, id: headers.id})
       // console.log(headers);
-      history.push("/home") 
+      history.push("/dashboard") 
     },
     onError: () => {
       history.push("/login");

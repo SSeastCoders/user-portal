@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
@@ -6,7 +5,7 @@ import { Redirect, Route, RouteProps } from "react-router-dom";
 
 const PublicRoute: React.FC<RouteProps> = ({children, ...rest}) => {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  const isAuthenticated = isLoggedIn || localStorage.getItem("token");
+  const isAuthenticated = isLoggedIn || sessionStorage.getItem("token");
 
   return (
     <Route

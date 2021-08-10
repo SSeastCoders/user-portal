@@ -6,15 +6,16 @@ import axios from "axios";
 import {DateTime} from 'luxon';
 import { BASE_URL } from "../../services/api";
 import * as ActionTypes from '../../store/action/actiontypes';
+import { useContext } from "react";
+import { AccountsBarContext } from "../../pages/DashBoard";
 
 
 const UserProfileNav = ({}) => {
   const dropdownRef = useRef(null);
   const history = useHistory();
-  const state = useSelector((state: any) => state.auth);
+  const state = useSelector((state) => state.auth);
   // const {data, isSuccess} = useQuery('user', async () => {await axios.get(`${BASE_URL}/users/${state.id}`, {headers: {"Authorization": state.token}})});
   const [data, setData] = useState({});
-  console.log(data)
   let user: any = data;
   const dispatch = useDispatch();
   const [dropdownState, updateDropdownState] = useState({
@@ -117,7 +118,7 @@ const UserProfileNav = ({}) => {
         </li>
         <li className="user-footer">
           <Link
-            to="/home/profile"
+            to="/dashboard/profile"
             onClick={toggleDropdown}
             className="btn btn-default btn-flat"
           >
