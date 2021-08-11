@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useQuery } from "react-query";
 import axios from "axios";
 import {DateTime} from 'luxon';
 import { BASE_URL } from "../../services/api";
 import * as ActionTypes from '../../store/action/actiontypes';
-import { useContext } from "react";
-import { AccountsBarContext } from "../../pages/DashBoard";
 
 
 const UserProfileNav = ({}) => {

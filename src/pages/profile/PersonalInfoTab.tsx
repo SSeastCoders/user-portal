@@ -1,42 +1,71 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import ButtonSpinner from '../../components/button/ButtonSpinner'
+import { InputValidation } from '../../components/form/InputValidation';
 import { BASE_URL } from '../../services/api';
+import { User } from '../../services/models/User';
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ResErrorObj } from '../../services/responses/ResErrorObj';
 
 interface PersonalInfoTabProps {
-
+  user: User
 }
 
-export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ }) => {
+interface ProfileForm {
+  firstName?: string,
+  lastName?: string,
+  username?: string,
+  email?: string,
+  phone?: string
+}
+
+const schema = Yup.object().shape({
+  username: Yup.string().matches(/^[a-z0-9A-Z]+$/, "username must be alphanumeric")
+    .min(4, "username must be greater than 4 characters")
+    .max(20, "username must less than 20 characters")
+    .required(),
+  email: Yup.string().email("Must be a valid email").required(),
+})
+
+export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ user }) => {
   // const [data, setData] = useState({});
   const state = useSelector((state) => state.auth);
   const result = useQuery(['user'], async () => {
     const data = await axios.get(`${BASE_URL}/users/${state.id}`, { headers: { "Authorization": state.token } });
     return data.data;
   });
-  // if (result.isLoading) {
-  //   return (
-  //     <div className="card">
-  //       <div className="card-body h">
-  //       <div className="overlay dark">
-  //         <i className="fas fa-2x fa-sync-alt fa-spin"></i>
-  //       </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  const updateUser = useMutation((update: ProfileForm) => axios.put(`${BASE_URL}/users/${state.id}`, update, { headers: { "Authorization": state.token } }));
+  let { firstName, lastName, email, phone, username } = user;
+  let form: ProfileForm = { firstName, lastName, email, phone, username }
+  const { formState: { errors }, handleSubmit, register, getValues, reset } = useForm({ defaultValues: form, resolver: yupResolver(schema) });
+  useEffect(() => {
+    reset(form)
+  }, [result.isSuccess, reset]) // eslint-disable-line 
+
   if (result.isError) {
     return <div>Errored</div>
   }
-  let user: any = result.data;
+  const onSubmit = (data: ProfileForm) => {
+    updateUser.mutate(data);
+  }
+  const errorRes: ResErrorObj = updateUser.error as any;
+  let renderResponse = () => {
+    if (updateUser.isError) {
+      return <div className="text-center text-danger">{errorRes.response.data.message}</div>
+    } else if (updateUser.isSuccess) {
+      return <div className="text-center text-green">User Information updated</div>
+    }
+  }
   return (
     <div className="card">
       <div className="card-body">
-        <form className="form-horizontal">
+        {renderResponse()}
+        <form noValidate onSubmit={handleSubmit(onSubmit)} className="form-horizontal">
           <div className="form-group row">
             <label
               htmlFor="inputName"
@@ -44,14 +73,7 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ }) => {
             >
               First Name
             </label>
-            <div className="col-sm-10">
-              <input
-                type="email"
-                className="form-control"
-                id="inputName"
-                placeholder={user?.firstName}
-              />
-            </div>
+            <InputValidation className="col-sm-10" name="firstName" register={register("firstName")} errors={errors}></InputValidation>
           </div>
           <div className="form-group row">
             <label
@@ -60,14 +82,7 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ }) => {
             >
               Last Name
             </label>
-            <div className="col-sm-10">
-              <input
-                type="text"
-                className="form-control"
-                id="inputEmail"
-                placeholder={user?.lastName}
-              />
-            </div>
+            <InputValidation className="col-sm-10" name="lastName" register={register("lastName")} errors={errors}></InputValidation>
           </div>
           <div className="form-group row">
             <label
@@ -76,14 +91,7 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ }) => {
             >
               Username
             </label>
-            <div className="col-sm-10">
-              <input
-                type="text"
-                className="form-control"
-                id="inputName2"
-                placeholder={user?.username}
-              />
-            </div>
+            <InputValidation className="col-sm-10" name="username" register={register("username")} errors={errors}></InputValidation>
           </div>
           <div className="form-group row">
             <label
@@ -92,14 +100,16 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ }) => {
             >
               Email
             </label>
-            <div className="col-sm-10">
-              <textarea
-                className="form-control"
-                id="inputExperience"
-                placeholder={user?.email}
-                defaultValue=""
-              />
-            </div>
+            <InputValidation className="col-sm-10" name="email" register={register("email")} errors={errors}></InputValidation>
+          </div>
+          <div className="form-group row">
+            <label
+              htmlFor="inputExperience"
+              className="col-sm-2 col-form-label"
+            >
+              Phone
+            </label>
+            <InputValidation className="col-sm-10" name="phone" register={register("phone")} errors={errors}></InputValidation>
           </div>
           <div className="form-group row">
             <label
@@ -109,33 +119,12 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ }) => {
               Date Joined
             </label>
             <div className="col-sm-10">
-              <input
-                type="text"
-                className="form-control"
-                id="inputSkills"
-                placeholder={user?.dateJoined}
-              />
+              <span className="form-control" style={{ border: "none" }}>{user?.dateJoined?.toLocaleDateString()}</span>
             </div>
           </div>
           <div className="form-group row">
             <div className="offset-sm-2 col-sm-10">
-              <div className="icheck-primary">
-                <input
-                  type="checkbox"
-                  id="agreeTerms"
-                  name="terms"
-                  defaultValue="agree"
-                />
-                <label htmlFor="agreeTerms">
-                  <span>I agree to the </span>
-                  <Link to="/">terms and condition</Link>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="form-group row">
-            <div className="offset-sm-2 col-sm-10">
-              <ButtonSpinner type="submit" theme="danger">
+              <ButtonSpinner isLoading={updateUser.isLoading} type="submit" theme="danger">
                 Submit
               </ButtonSpinner>
             </div>
@@ -143,9 +132,9 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ }) => {
         </form>
       </div>
       {result.isLoading &&
-      <div className="overlay dark">
-        <i className="fas fa-2x fa-sync-alt fa-spin"></i>
-      </div>}
+        <div className="overlay dark">
+          <i className="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>}
     </div>
   );
 }

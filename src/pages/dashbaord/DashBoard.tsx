@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { MainNavBar } from '../components/MainNavBar/MainNavBar';
+import { MainNavBar } from '../../components/MainNavBar/MainNavBar';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
-import { Profile } from './profile/Profile';
-import { SideBar } from '../components/sidebar/SideBar';
+import { Profile } from '../profile/Profile';
+import { SideBar } from '../../components/sidebar/SideBar';
 import { Navbar, NavLink } from 'react-bootstrap';
 import './DashBoard.css';
-import { OpenAccount } from './openAccount/OpenAccount';
-import { AccountRegistration } from './openAccount/AccountRegistration';
+import { OpenAccount } from '../openAccount/OpenAccount';
+import { AccountRegistration } from '../openAccount/AccountRegistration';
 
 
 interface DashBoardProps {

@@ -1,27 +1,65 @@
-import React, { useContext } from 'react'
-import { useEffect } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import axios from 'axios';
+import React, { useEffect, useMemo } from 'react'
+import { useForm } from 'react-hook-form';
+import { useQuery } from 'react-query';
+import { DefaultRootState, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import { string } from 'yup/lib/locale';
 import ButtonSpinner from '../../components/button/ButtonSpinner';
-import { AccountsBarContext } from '../DashBoard';
+import { useDisableBar } from '../../hooks/disableBar';
+import { BASE_URL } from '../../services/api';
+import { User } from '../../services/models/User';
+import * as Yup from "yup";
+import { InputValidation } from '../../components/form/InputValidation';
 
 interface OpenAccountProps {
 
 }
 
+interface FormValues {
+  firstName?: string,
+  lastName?: string,
+  email?: string,
+  address?: string,
+  phone?: string,
+  checked: boolean
+}
+
+const schema = Yup.object().shape({
+  firstName: Yup.string()
+    .required(),
+  lastName: Yup.string().required(),
+  phone: Yup.string().required(),
+  address: Yup.string().required(),
+  email: Yup.string().email("Must be a valid email").required()
+  // checked: Yup.bool().isTrue("Terms must be chekced")
+})
+
 export const OpenAccount: React.FC<OpenAccountProps> = ({ }) => {
-  const disableBar = useContext(AccountsBarContext);
+  const state = useSelector((state: DefaultRootState) => state.auth);
+  const result = useQuery(['user'], async () => {
+    const data = await axios.get(`${BASE_URL}/users/${state.id}`, { headers: { "Authorization": state.token } });
+    return data.data;
+  });
+  let user: User = new User(result.data);
+  let { firstName, lastName, email, phone } = user;
+  let address = user.addressToString();
+  const form: FormValues = useMemo(() => {return { firstName, lastName, email, phone, address: address, checked: false }}, [firstName, lastName, email, phone, address])
+  // let form: FormValues = { firstName, lastName, email, phone, address: user.addressToString(), checked: false }
   const history = useHistory();
+  const { formState: { errors }, handleSubmit, register, reset } = useForm<FormValues>({ defaultValues: form, resolver: yupResolver(schema) });
   useEffect(() => {
-    disableBar(true);
-    return () => disableBar(false);
-  }, []);
-  
-  const handleSubmit = (data: any) => {
+    reset(form)
+  }, [form]) // eslint-disable-line
+  useDisableBar();
+
+  const nextPage = () => {
     history.push("/dashboard/accountOpening/accountType");
-  } 
+  }
   return (
     <div className="content-wrapper">
-      <div className="container-fluid">
+      <div className="content-header">
         <h2>Opening Account</h2>
       </div>
       <div className="container">
@@ -33,7 +71,7 @@ export const OpenAccount: React.FC<OpenAccountProps> = ({ }) => {
             <div className="progress mb-3">
               <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{ width: "33%" }}></div>
             </div>
-            <form onSubmit={() => handleSubmit(true)} className="form-horizontal">
+            <form noValidate onSubmit={() => history.push("/dashboard/accountOpening/accountType")} className="form-horizontal">
               <div className="form-group row">
                 <label
                   htmlFor="inputName"
@@ -41,13 +79,7 @@ export const OpenAccount: React.FC<OpenAccountProps> = ({ }) => {
                 >
                   First Name
                 </label>
-                <div className="col-sm-10">
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="inputName"
-                  />
-                </div>
+                <InputValidation className="col-sm-10" name="firstName" register={register("firstName")} errors={errors}></InputValidation>
               </div>
               <div className="form-group row">
                 <label
@@ -56,13 +88,7 @@ export const OpenAccount: React.FC<OpenAccountProps> = ({ }) => {
                 >
                   Last Name
                 </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputEmail"
-                  />
-                </div>
+                <InputValidation className="col-sm-10" name="lastName" register={register("lastName")} errors={errors}></InputValidation>
               </div>
               <div className="form-group row">
                 <label
@@ -71,27 +97,17 @@ export const OpenAccount: React.FC<OpenAccountProps> = ({ }) => {
                 >
                   Email
                 </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputName2"
-                  />
-                </div>
+                <InputValidation className="col-sm-10" name="email" register={register("email")} errors={errors}></InputValidation>
               </div>
               <div className="form-group row">
                 <label
                   htmlFor="inputExperience"
                   className="col-sm-2 col-form-label"
-                >
+                > 
                   Address
                 </label>
                 <div className="col-sm-10">
-                  <textarea
-                    className="form-control"
-                    id="inputExperience"
-                    defaultValue=""
-                  />
+                  <input readOnly type="text" className="form-control" {...register("address")} style={{ border: "none" }}></input>
                 </div>
               </div>
               <div className="form-group row">
@@ -115,8 +131,7 @@ export const OpenAccount: React.FC<OpenAccountProps> = ({ }) => {
                     <input
                       type="checkbox"
                       id="agreeTerms"
-                      name="terms"
-                      defaultValue="agree"
+                      // {...register("checked")}
                     />
                     <label htmlFor="agreeTerms">
                       <span>I agree to the </span>

@@ -6,7 +6,7 @@ import { Register } from './pages/Register';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import PublicRoute from './routes/PublicRoute';
 import PrivateRoute from './routes/PrivateRoute';
-import { DashBoard } from './pages/DashBoard';
+import { DashBoard } from './pages/dashbaord/DashBoard';
 
 const queryClient = new QueryClient();
 
