@@ -1,19 +1,18 @@
-import axios from 'axios';
-import React, { useState } from 'react'
-import { useEffect } from 'react';
+import { yupResolver } from "@hookform/resolvers/yup";
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
-import ButtonSpinner from '../../components/button/ButtonSpinner'
+import * as Yup from "yup";
+import ButtonSpinner from '../../components/button/ButtonSpinner';
 import { InputValidation } from '../../components/form/InputValidation';
 import { BASE_URL } from '../../services/api';
+import axiosToken from '../../services/axios';
 import { User } from '../../services/models/User';
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { ResErrorObj } from '../../services/responses/ResErrorObj';
 
 interface PersonalInfoTabProps {
-  user: User
+  user?: User
 }
 
 interface ProfileForm {
@@ -33,23 +32,12 @@ const schema = Yup.object().shape({
 })
 
 export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ user }) => {
-  // const [data, setData] = useState({});
   const state = useSelector((state) => state.auth);
-  const result = useQuery(['user'], async () => {
-    const data = await axios.get(`${BASE_URL}/users/${state.id}`, { headers: { "Authorization": state.token } });
-    return data.data;
-  });
-  const updateUser = useMutation((update: ProfileForm) => axios.put(`${BASE_URL}/users/${state.id}`, update, { headers: { "Authorization": state.token } }));
-  let { firstName, lastName, email, phone, username } = user;
-  let form: ProfileForm = { firstName, lastName, email, phone, username }
-  const { formState: { errors }, handleSubmit, register, getValues, reset } = useForm({ defaultValues: form, resolver: yupResolver(schema) });
+  const updateUser = useMutation((update: ProfileForm) => axiosToken.put(`${BASE_URL}/users/${state.id}`, update));
+  const { formState: { errors }, handleSubmit, register, getValues, reset } = useForm({ defaultValues: user, resolver: yupResolver(schema) });
   useEffect(() => {
-    reset(form)
-  }, [result.isSuccess, reset]) // eslint-disable-line 
-
-  if (result.isError) {
-    return <div>Errored</div>
-  }
+    reset(user)
+  }, [user, reset]) // eslint-disable-line 
   const onSubmit = (data: ProfileForm) => {
     updateUser.mutate(data);
   }
@@ -62,7 +50,7 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ user }) => {
     }
   }
   return (
-    <div className="card">
+    <div className="card tw-max-w-screen-lg">
       <div className="card-body">
         {renderResponse()}
         <form noValidate onSubmit={handleSubmit(onSubmit)} className="form-horizontal">
@@ -119,7 +107,7 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ user }) => {
               Date Joined
             </label>
             <div className="col-sm-10">
-              <span className="form-control" style={{ border: "none" }}>{user?.dateJoined?.toLocaleDateString()}</span>
+              <span className="form-control" style={{ border: "none" }}>{user?.dateJoined?.toFormat('dd LLL yyyy')}</span>
             </div>
           </div>
           <div className="form-group row">
@@ -131,10 +119,6 @@ export const PersonalInfoTab: React.FC<PersonalInfoTabProps> = ({ user }) => {
           </div>
         </form>
       </div>
-      {result.isLoading &&
-        <div className="overlay dark">
-          <i className="fas fa-2x fa-sync-alt fa-spin"></i>
-        </div>}
     </div>
   );
 }

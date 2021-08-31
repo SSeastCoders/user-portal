@@ -12,7 +12,7 @@ import { BASE_URL } from '../services/api';
 import { ResErrorObj } from '../services/responses/ResErrorObj';
 import { LoginForm } from '../services/formdata/LoginForm';
 import ButtonSpinner from '../components/button/ButtonSpinner';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as ActionTypes from '../store/action/actiontypes';
 
 interface RegisterProps {
@@ -57,7 +57,7 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
   const history = useHistory();
 
   const dispatch = useDispatch();
-  
+
 
   //hook that sends a post to create a user.
   const createUserMutation = useMutation((user: FormValues) => axios.post(BASE_URL + "/users", user), {
@@ -66,11 +66,12 @@ export const Register: React.FC<RegisterProps> = ({ }) => {
 
   //hook that sends a post to endpoint login to authenticate
   const loginMutation = useMutation((loginInfo: LoginForm) => axios.post(BASE_URL + "/login", loginInfo), {
-  onSuccess: ({headers}) => { 
+    onSuccess: ({ headers }) => {
+      console.log(headers);
       // TODO add storage of token
-      dispatch({ type: ActionTypes.LOGIN_USER, token: headers.Authorization, id: headers.id})
+      dispatch({ type: ActionTypes.LOGIN_USER, token: headers.authorization, id: headers.id })
       // console.log(headers);
-      history.push("/dashboard") 
+      history.push("/dashboard")
     },
     onError: () => {
       history.push("/login");

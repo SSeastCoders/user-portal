@@ -1,5 +1,5 @@
 export interface LoginAction {
   type: string;
-  token: string;
-  id: string;
+  token?: string;
+  id?: string;
 }

@@ -7,12 +7,14 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import PublicRoute from './routes/PublicRoute';
 import PrivateRoute from './routes/PrivateRoute';
 import { DashBoard } from './pages/dashbaord/DashBoard';
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <Router>
         <Switch>
           <Route exact path="/">

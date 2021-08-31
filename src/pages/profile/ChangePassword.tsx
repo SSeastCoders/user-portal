@@ -1,15 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import React from 'react'
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
+import * as Yup from "yup";
 import ButtonSpinner from '../../components/button/ButtonSpinner';
 import { InputPasswordToggle } from '../../components/form/InputPasswordToggle';
 import { BASE_URL } from '../../services/api';
-import { User } from '../../services/models/User';
 import { ResErrorObj } from '../../services/responses/ResErrorObj';
-import * as Yup from "yup";
 
 interface ChangePasswordProps {
 }
@@ -54,14 +53,12 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
         <form noValidate onSubmit={handleSubmit(onSubmit)} className="form-horizontal">
           <div className="form-group row">
             <label
-              htmlFor="inputName"
               className="col-sm-2 col-form-label"
             >Password</label>
             <InputPasswordToggle className="col-sm-10" name="password" register={register("password")} errors={errors}></InputPasswordToggle>
           </div>
           <div className="form-group row">
             <label
-              htmlFor="inputEmail"
               className="col-sm-2 col-form-label"
             >Confirm Password</label>
             <InputPasswordToggle className="col-sm-10" name="confirmPassword" register={register("confirmPassword")} errors={errors}></InputPasswordToggle>

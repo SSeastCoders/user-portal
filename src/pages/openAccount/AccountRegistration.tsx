@@ -1,13 +1,16 @@
-import axios from 'axios';
-import React, { useContext, useEffect } from 'react'
-import { Form } from 'react-bootstrap';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ButtonSpinner from '../../components/button/ButtonSpinner';
+import { InputValidation } from '../../components/form/InputValidation';
 import { useDisableBar } from '../../hooks/disableBar';
 import { ACCOUNT_ENDPOINT } from '../../services/api';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import axiosToken from '../../services/axios';
+import { ErrorMessage } from '@hookform/error-message';
 
 interface AccountRegistrationProps {
 
@@ -16,15 +19,21 @@ interface AccountRegistrationProps {
 interface FormValues {
   accountType: string,
   balance: number
-  accountName: string
+  nickName: string
 }
+
+const scehma = Yup.object().shape({
+  accountType: Yup.string().required(),
+  balance: Yup.number().required().min(1, "deposit must not be less than zero"),
+  nickName: Yup.string().required()
+})
 
 export const AccountRegistration: React.FC<AccountRegistrationProps> = ({ }) => {
   useDisableBar();
   const history = useHistory();
   const state = useSelector((state) => state.auth);
-  const createAccount = useMutation((update: FormValues) => axios.post(`${ACCOUNT_ENDPOINT}`, update));
-  const {register, handleSubmit} = useForm<FormValues>();
+  const createAccount = useMutation((update: any) => axiosToken.post(`${ACCOUNT_ENDPOINT}`, update));
+  const {register, handleSubmit, formState: {errors}} = useForm<FormValues>({resolver: yupResolver(scehma)});
   const submitForm = (data: FormValues) => {
     const ids = [Number(state.id)]
     const request = {...data, usersIds: ids}
@@ -34,8 +43,8 @@ export const AccountRegistration: React.FC<AccountRegistrationProps> = ({ }) => 
 
   return (
     <div className="content-wrapper">
-      <div className="container-fluid">
-        <h2>Opening Account</h2>
+      <div className="content-header">
+        <h2 className="m-0">Opening Account</h2>
       </div>
       <div className="container">
         <div className="card">
@@ -49,54 +58,38 @@ export const AccountRegistration: React.FC<AccountRegistrationProps> = ({ }) => 
             <form noValidate onSubmit={handleSubmit(submitForm)} className="form-horizontal">
               <div className="form-group row">
                 <label
-                  htmlFor="inputName"
                   className="col-sm-2 col-form-label"
                 >
                   Account type
                 </label>
                 <div className="col-sm-10">
                   <select className="form-control" {...register("accountType")}>
-                    <option>Account Types</option>
+                    <option value="">Account Types</option>
                     <option value="CHECKING">Checking</option>
                     <option value="SAVING">Saving</option>
                   </select>
+                  <ErrorMessage className="invalid-feedback d-block" errors={errors} as="span" name="accountType"></ErrorMessage>
                 </div>
               </div>
               <div className="form-group row">
                 <label
-                  htmlFor="inputEmail"
                   className="col-sm-2 col-form-label"
                 >
                   Deposit
                 </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    className="form-control"
-                    {...register("balance")}
-                    id="inputEmail"
-                  />
-                </div>
+                <InputValidation className="col-sm-10" errors={errors} name="balance" register={register("balance")}></InputValidation>
               </div>
               <div className="form-group row">
                 <label
-                  htmlFor="inputEmail"
                   className="col-sm-2 col-form-label"
                 >
-                  Account Name
+                  Account Nick Name
                 </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputEmail"
-                    {...register("accountName")}
-                  />
-                </div>
+                <InputValidation className="col-sm-10" errors={errors} name="nickName" register={register("nickName")}></InputValidation>
               </div>
               <div className="float-right">
                 <div className="">
-                  <ButtonSpinner type="submit" theme="primary">
+                  <ButtonSpinner isLoading={createAccount.isLoading} type="submit" theme="primary">
                     Submit
                   </ButtonSpinner>
                 </div>

@@ -1,19 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import { Schema } from 'inspector';
-import React from 'react'
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { Link, useHistory } from 'react-router-dom'
-import * as Yup from 'yup'
+import { useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import * as Yup from 'yup';
 import ButtonSpinner from '../components/button/ButtonSpinner';
 import { InputPasswordToggle } from '../components/form/InputPasswordToggle';
 import { InputValidation } from '../components/form/InputValidation';
 import { BASE_URL } from '../services/api';
 import { LoginForm } from '../services/formdata/LoginForm';
-import {useDispatch} from 'react-redux';
 import * as ActionTypes from '../store/action/actiontypes';
-import { ResErrorObj } from '../services/responses/ResErrorObj';
 
 interface loginProps {
 
@@ -67,17 +65,13 @@ export const Login: React.FC<loginProps> = () => {
                     </label>
                   </div>
                 </div>
-                {/*
-                <!-- /.col --> */}
                 <div className="col-4">
                   <ButtonSpinner block isLoading={loginMutation.isLoading} type="submit">Sign in</ButtonSpinner>
                 </div>
-                {/*
-                <!-- /.col --> */}
               </div>
             </form>
 
-            <div className="social-auth-links text-center mb-3">
+            {/* <div className="social-auth-links text-center mb-3">
               <p>- OR -</p>
               <a href="#" className="btn btn-block btn-primary">
                 <i className="fab fa-facebook mr-2"></i> Sign in using Facebook
@@ -85,10 +79,7 @@ export const Login: React.FC<loginProps> = () => {
               <a href="#" className="btn btn-block btn-danger">
                 <i className="fab fa-google-plus mr-2"></i> Sign in using Google+
               </a>
-            </div>
-            {/*
-            <!-- /.social-auth-links --> */}
-
+            </div> */}
             <p className="mb-1">
               <a href="forgot-password.html">I forgot my password</a>
             </p>
@@ -96,8 +87,6 @@ export const Login: React.FC<loginProps> = () => {
               <Link to="/register" className="text-center">Register an Account</Link>
             </p>
           </div>
-          {/*
-          <!-- /.login-card-body --> */}
         </div>
       </div>
     </div>

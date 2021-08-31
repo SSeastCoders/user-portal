@@ -3,8 +3,8 @@ import * as ActionTypes from '../action/actiontypes';
 
 export interface AuthState {
   isLoggedIn: boolean;
-  token: string | null;
-  id: string | null;
+  token?: string | null;
+  id?: string | null;
 }
 
 const initialState: AuthState = {
@@ -16,8 +16,8 @@ const initialState: AuthState = {
 const authReducer = (state: AuthState = initialState, action: LoginAction): AuthState => {
   switch (action.type) {
     case ActionTypes.LOGIN_USER:
-      sessionStorage.setItem('token', action.token);
-      sessionStorage.setItem('id', action.id);
+      sessionStorage.setItem('token', action.token!);
+      sessionStorage.setItem('id', action.id!);
       return {
         ...state,
         isLoggedIn: true,
