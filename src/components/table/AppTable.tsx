@@ -1,9 +1,8 @@
 import React from 'react';
-import { Spinner } from 'react-bootstrap';
 import BTable, { TableProps } from 'react-bootstrap/Table';
-import { useTable } from 'react-table';
+import { Column, useSortBy, useTable } from 'react-table';
 interface AppTableProps extends TableProps {
-  columns: any;
+  columns: Column[];
   data: any;
 }
 
@@ -14,7 +13,9 @@ export const AppTable: React.FC<AppTableProps> = ({ columns, data, ...rest }) =>
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data })
+    state: {sortBy}
+  } = useTable({ columns, data}, useSortBy);
+  console.log(sortBy[0]?.id);
   return (
     <BTable {...rest} {...getTableProps()} >
       <thead>
@@ -22,9 +23,16 @@ export const AppTable: React.FC<AppTableProps> = ({ columns, data, ...rest }) =>
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th
-                {...column.getHeaderProps()}
+                {...column.getHeaderProps(column.getSortByToggleProps())}
               >
                 {column.render('Header')}
+                <span className="tw-pl-2">
+                  {column.isSorted
+                    ? column.isSortedDesc
+                      ? <i className="fas fa-sort-down"></i>
+                      : <i className="fas fa-sort-up"></i>
+                    : <i className="fas fa-sort"></i>}
+                </span>
               </th>
             ))}
           </tr>

@@ -10,7 +10,7 @@ interface AccountDetailsProps {
 
 }
 
-export const AccountDetails: React.FC<AccountDetailsProps> = ({ }) => {
+export const AccountDetails: React.FC<AccountDetailsProps> = () => {
   const {state} = useLocation<{account: Account}>();
   const {data, ...result} = useQuery(['account', state.account.id], async () => {
     return getAccountById(state.account.id);
