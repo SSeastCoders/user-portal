@@ -6,9 +6,10 @@ pipeline {
         commitIDShort = sh(returnStdout: true, script: "git rev-parse --short HEAD")
     }
     stages {
-        stage('Clean and Test') {
+        stage('install Dependencies and Test') {
             steps {
                 //sh 'npm run test'
+                sh 'npm install'
                 sh 'echo "Testing..."' 
             }
         }
