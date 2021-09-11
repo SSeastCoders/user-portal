@@ -13,4 +13,6 @@ yarn-error.log*
 /.changelog
 .npm/
 yarn.lock
-
+/.scannerwork
+/coverage
+/reports
