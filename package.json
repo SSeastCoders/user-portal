@@ -71,8 +71,8 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
   },
   "jestSonar": {
-    "reportPath": "./reports",
-    "reportFile": "./reports/test-report.xml",
+    "reportPath": "reports",
+    "reportFile": "test-report.xml",
     "indent": 4
   }
 }
