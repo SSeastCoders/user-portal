@@ -71,8 +71,8 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
   },
   "jestSonar": {
-    "reportPath": "reports",
-    "reportFile": "test-report.xml",
+    "reportPath": "/var/lib/jenkins/workspace/user-portal/reports",
+    "reportFile": "/var/lib/jenkins/workspace/user-portal/reports/test-report.xml",
     "indent": 4
   }
 }
