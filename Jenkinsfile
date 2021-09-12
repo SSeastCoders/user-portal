@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('install Dependencies and Test') {
             steps {
-                //sh 'npm run test'
                 sh 'npm install'
+                //sh 'npm run test'
                 sh 'echo "Testing..."' 
             }
         }
