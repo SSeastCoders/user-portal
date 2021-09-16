@@ -2,7 +2,7 @@ const sonarqubeScanner = require("sonarqube-scanner");
 sonarqubeScanner(
   {
     serverUrl: "http://ec2-18-215-174-254.compute-1.amazonaws.com:9000",
-    token: "a25ec7ad1ab1febb47678bd47d4785000d29d0e8",
+    token: "0a6085384327e458ebf1a13c907f122635ed4cab",
     options: {
       "sonar.sources": "./src",
       "sonar.exclusions": "**/__tests__/**",
