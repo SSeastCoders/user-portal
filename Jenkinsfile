@@ -44,10 +44,10 @@ pipeline {
     //         }
     //     }
     // }
-    // post {
-    //     success {
-    //         sh 'docker image prune -af'
-    //     }
-    // }
+        post {
+            success {
+                sh 'Finished'
+            }
+        }
     }
 }
