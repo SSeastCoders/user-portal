@@ -47,7 +47,7 @@ pipeline {
     }
         post {
             success {
-                sh 'Finished'
+                sh 'echo "Finished."'
             }
         }
     
