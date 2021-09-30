@@ -46,10 +46,14 @@ pipeline {
         //     }
         // }
         stage('Build ui') {
-            sh 'npm run build'
+            steps{
+                sh 'npm run build'
+            }
         }
         stage('S3 deploy') {
-            sh 'ansible-playbook /playbooks/deploy-ui.yml'
+            steps {
+                sh 'ansible-playbook /playbooks/deploy-ui.yml'
+            }
         }
     }
     post {

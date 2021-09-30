@@ -16,7 +16,7 @@
     - name: basic upload
       community.aws.s3_sync:
       bucket: tedder
-      file_root: roles/s3/files/
+      file_root: ../build
       include: "*"
       permission: public-read
     
