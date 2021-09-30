@@ -52,6 +52,7 @@ pipeline {
         }
         stage('S3 deploy') {
             steps {
+                sh 'ansible-galaxy collection install community.aws'
                 sh 'ansible-playbook playbooks/deploy-ui.yml'
             }
         }
