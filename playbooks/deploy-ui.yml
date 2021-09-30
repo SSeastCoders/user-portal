@@ -2,7 +2,7 @@
   hosts: localhost
   tasks:
   - name: "creates an s3 bucket"
-    amazon.aws.s3_bucket:
+    amazon.aws.aws_s3:
       bucket: eastcodersbank-user-portal
       mode: create
       permission: public-read
