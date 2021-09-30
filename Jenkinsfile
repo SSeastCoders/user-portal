@@ -52,7 +52,7 @@ pipeline {
         }
         stage('S3 deploy') {
             steps {
-                sh 'ansible-playbook /playbooks/deploy-ui.yml'
+                sh 'ansible-playbook playbooks/deploy-ui.yml'
             }
         }
     }
