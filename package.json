@@ -37,7 +37,7 @@
   },
   "scripts": {
     "start": "PORT=3222 craco start",
-    "build": "craco build",
+    "build": "CI=false && craco build",
     "test": "react-scripts test --silent --env=jsdom --coverage --testResultsProcessor jest-sonar-reporter",
     "sonar": "node sonar-scan.js",
     "eject": "react-scripts eject"
