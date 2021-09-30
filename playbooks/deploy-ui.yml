@@ -1,20 +1,20 @@
 - name: Create and Upload UI-user-portal
   hosts: localhost
   tasks:
-    - amazon.aws.s3_bucket:
-      name: creates an s3 bucket
-      state: present
+  - name: "creates an s3 bucket"
+    amazon.aws.s3_bucket:
       bucket: eastcodersbank-user-portal
       mode: create
       permission: public-read
 
-    - community.aws.s3_website:
+  - name: "Config static site"
+    community.aws.s3_website:
       name: eastcodersbank-user-portal
       state: present
       suffix: index.html
 
-    - name: basic upload
-      community.aws.s3_sync:
+  - name: "basic upload"
+    community.aws.s3_sync:
       bucket: eastcodersbank-user-portal
       file_root: ../build
       include: "*"
