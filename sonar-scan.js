@@ -10,6 +10,7 @@ sonarqubeScanner(
       "sonar.test.inclusions": "./src/__tests__/**/*.test.tsx,./src/__tests__/**/*.test.ts",
       "sonar.typescript.lcov.reportPaths": "coverage/lcov.info",
       "sonar.testExecutionReportPaths": "reports/test-report.xml",
+      "sonar.coverage.jacoco.xmlReportPaths": "reports/test-report.xml"
     },
   },
   () => {},
