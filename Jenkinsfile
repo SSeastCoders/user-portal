@@ -13,20 +13,20 @@ pipeline {
                 sh 'echo "Testing..."' 
             }
         }
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         withSonarQubeEnv('sonarScanner') {
-        //             sh 'npm run sonar'
-        //         }
-        //     }
-        // }
-        // stage('Quality Gate') {
-        //     steps {
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarScanner') {
+                    sh 'npm run sonar'
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         // stage('Docker Image Build and ECR Image Push') {
         //     steps {
         //         withCredentials([string(credentialsId: 'awsAccountNumber', variable: 'awsID')]) {
