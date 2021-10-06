@@ -15,7 +15,6 @@ export const AppTable: React.FC<AppTableProps> = ({ columns, data, ...rest }) =>
     prepareRow,
     state: {sortBy}
   } = useTable({ columns, data}, useSortBy);
-  console.log(sortBy[0]?.id);
   return (
     <BTable {...rest} {...getTableProps()} >
       <thead>

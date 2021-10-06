@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom';
-
+import "./sidebar.css";
 interface SideBarProps {
 
 }
 
 export const SideBar: React.FC<SideBarProps> = ({}) => {
   return (
-    <aside className="main-sidebar sidebar-dark-primary elevation-4">
+    <aside className="app-sidebar sidebar-dark-primary elevation-4">
       <Link to="/" className="brand-link">
         <span className="brand-text font-weight-light">EastCoders Bank</span>
       </Link>

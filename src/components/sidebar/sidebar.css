@@ -1,0 +1,14 @@
+.app-sidebar {
+  transition: margin-left .3s ease-in-out, width .3s ease-in-out;
+  width: 250px;
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+}
+
+@media (max-width: 991.98px) {
+  .app-sidebar {
+    box-shadow: none;
+    margin-left: -250px
+  }
+}

@@ -1,26 +1,62 @@
 import Pagination from "@vlsergey/react-bootstrap-pagination";
-import React, { useMemo, useState } from 'react';
-import { Card, Spinner, useAccordionToggle } from 'react-bootstrap';
-import Accordion from 'react-bootstrap/Accordion';
+import React, { useMemo, useReducer, useState } from 'react';
+import { Collapse, Spinner } from 'react-bootstrap';
+import { useForm } from "react-hook-form";
 import { useQuery } from 'react-query';
 import Select from 'react-select';
 import { Column } from 'react-table';
-import { CollapseButton } from '../../../../components/button/CollapseButton';
 import { AppTable } from '../../../../components/table/AppTable';
-import { getTransactionsByAccountId } from '../../../../services/services';
+import { getTransactionsByOptions } from '../../../../services/services';
+import { TransactionOptions } from "../../../../utils/constants/transactionTableOptions";
+import { SearchForm } from "./SearchForm";
 
 interface TransactionTableProps {
   id: number
 }
 
+export interface SearchData {
+  search?: string
+  fromDate?: string,
+  toDate?: string,
+  fromAmount?: number,
+  toAmount?: number
+}
+
+const initialState: SearchData = {
+  search: undefined,
+  fromDate: undefined,
+  toDate: undefined,
+  fromAmount: undefined,
+  toAmount: undefined
+}
+
+type Action = {
+  type: string,
+  payload?: SearchData
+}
+
+function reducer(state: SearchData, action: Action): SearchData {
+  switch (action.type) {
+    case 'reset':
+      return initialState;
+    case 'update':
+      return { ...state, ...action.payload };
+    default:
+      return initialState;
+  }
+}
 
 export const TransactionTable: React.FC<TransactionTableProps> = ({ id }) => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
+  const [open, setOpen] = useState(false);
+  // const [dates, setDates] = useState<{fromDate: Date, toDate: Date} | undefined>(undefined);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [selectVal, setSelectVal] = useState(TransactionOptions[0]);
 
   //must specify all dependency for usequery to update properly
-  const { data, ...rest } = useQuery(['transactions', { page, pageSize, id }], async () => {
-    return getTransactionsByAccountId(id, page, pageSize);
+  const { data, refetch, ...rest } = useQuery(['transactions', { page, pageSize, id, ...state }], async () => {
+    return getTransactionsByOptions(id, page, pageSize, state.search, state.fromDate, state.toDate, state.fromAmount, state.toAmount);
   }, { staleTime: 5 * 1000, keepPreviousData: true })
 
   const columns: Column[] = useMemo(() => [
@@ -48,7 +84,19 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({ id }) => {
     [data]
   );
   const handleSearchClick = () => {
+    setSelectVal(TransactionOptions[1]);
+    setOpen(!open)
+  }
 
+  const selectChange = (e: { label: string, value: string } | null) => {
+    setSelectVal({ label: e?.label!, value: e?.value! })
+    if (e?.value === "Transactions") {
+      dispatch({ type: "reset" });
+      setPage(0);
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
   }
 
   const handlePageSizeChange = (event: any) => {
@@ -66,14 +114,21 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({ id }) => {
         <div className="tw-flex tw-pt-3 tw-flex-nowrap tw-items-center">
           <h2 className="tw-pr-2">Showing</h2>
           <Select
+            value={selectVal}
             isSearchable={false}
             className="tw-w-2/4"
-            options={[{ value: "Transactions", label: "Transactions" }, { value: "Search", label: "Search" }]}
-            defaultValue={{ label: "All Transactions", value: "All Transactions" }} />
+            options={TransactionOptions}
+            defaultValue={{ label: "All Transactions", value: "All Transactions" }}
+            onChange={selectChange}
+          />
           <button type="button" className="tw-text-primary tw-pl-3 hover:tw-text-gray-900" onClick={handleSearchClick}>Search</button>
         </div>
-        <hr className="tw--mx-5 tw-mt-3" />
-
+        <Collapse in={open}>
+          <div>
+            <hr className="tw--mx-5 tw-mt-3" />
+            <SearchForm dispatch={dispatch} refetch={refetch} setPage={setPage}></SearchForm>
+          </div>
+        </Collapse>
       </div>
       <div className="card-body">
         <AppTable bordered striped responsive columns={columns} data={transactions}></AppTable>
@@ -90,7 +145,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({ id }) => {
           </div>
         </div>
       </div>
-      {rest.isLoading &&
+      {rest.isFetching &&
         <div className="overlay">
           <Spinner animation="border" variant="primary"></Spinner>
         </div>
