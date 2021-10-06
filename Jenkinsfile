@@ -26,7 +26,7 @@ pipeline {
                 sh '''
                     aws cloudformation deploy \
                     --stack-name ${PORTAL_NAME}-portal-stack \
-                    --template-file setup-stack.yml \
+                    --template-file deploy.yaml \
                     --parameter-overrides \
                         Domain=${DOMAIN} \
                     --capabilities CAPABILITY_NAMED_IAM \
