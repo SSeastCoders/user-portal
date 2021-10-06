@@ -8,9 +8,9 @@ pipeline {
         REGION = 'us-east-2'
         DOMAIN = 'eastcodersbank.com'
         S3_NAME = 'dev-user-portal-bucket-10052021'
-        REACT_APP_USER_ENDPOINT= 'http://DevApplicationLoadBalancer-1828113511.us-east-2.elb.amazonaws.com:8222'
-        REACT_APP_ACCOUNT_ENDPOINT='http://DevApplicationLoadBalancer-1828113511.us-east-2.elb.amazonaws.com:8223/api/v1/accounts'
-        REACT_APP_TRANSACTION_ENDPOINT='http://DevApplicationLoadBalancer-1828113511.us-east-2.elb.amazonaws.com:8224/api/v1/transaction'
+        REACT_APP_USER_ENDPOINT= 'http://DevApplicationLoadBalancer-762600723.us-east-2.elb.amazonaws.com:8222'
+        REACT_APP_ACCOUNT_ENDPOINT='http://DevApplicationLoadBalancer-762600723.us-east-2.elb.amazonaws.com:8223/api/v1/accounts'
+        REACT_APP_TRANSACTION_ENDPOINT='http://DevApplicationLoadBalancer-762600723.us-east-2.elb.amazonaws.com:8224/api/v1/transaction'
     }
 
     stages {
