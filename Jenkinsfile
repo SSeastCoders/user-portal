@@ -2,7 +2,7 @@
 pipeline {
 
     agent any
-
+    tools {nodejs "nodejs"}
     environment {
         PORTAL_NAME = 'customer'
         REGION = 'us-east-2'
