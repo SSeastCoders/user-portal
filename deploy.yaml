@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  
+Parameters:
+  Domain:
+    Type: String
+    Description: 'The root domain name'
+    Default: 'eastcodersbank.com'
+  
+Resources:
+  PortalDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        DefaultRootObject: 'index.html'
+        Comment: 'Portal distribution for user portal environment.'
+        Enabled: true
+        DefaultCacheBehavior:
+          TargetOriginId: '{{resolve:secretsmanager:UserBucket:SecretString}}'
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: none
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: '/index.html'
+            ErrorCachingMinTTL: 300
+        PriceClass: PriceClass_100
+        Aliases:
+          - !Sub 'dashboard.${Domain}'
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:326848027964:certificate/bf561d2a-f4ae-45fe-93af-8acf5829d3ec
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        Origins:
+          - DomainName: '{{resolve:secretsmanager:UserBucketDomain:SecretString}}'
+            Id: '{{resolve:secretsmanager:UserBucket:SecretString}}'
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+  PortalDNS:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: '{{resolve:secretsmanager:HostedZone:SecretString}}'
+      Comment: !Sub 'Public user portal DNS for react app'
+      RecordSets:
+        - Name: !Sub 'dashboard.${Domain}'
+          Type: A
+          AliasTarget:
+            DNSName: !GetAtt PortalDistribution.DomainName
+            HostedZoneId: Z2FDTNDATAQYW2
