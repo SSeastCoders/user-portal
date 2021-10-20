@@ -1,10 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import UserProfileNav from './UserProfileNav';
 
-interface NavBarProps {
-
-}
+interface NavBarProps {}
 
 export const MainNavBar: React.FC<NavBarProps> = ({}) => {
   return (
@@ -65,4 +63,4 @@ export const MainNavBar: React.FC<NavBarProps> = ({}) => {
       </ul>
     </nav>
   );
-}
+};

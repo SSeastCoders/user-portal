@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.2.0",
+    "@craco/craco": "^6.3.0",
     "@hookform/error-message": "^2.0.0",
     "@hookform/resolvers": "^2.6.1",
     "@testing-library/jest-dom": "^5.14.1",
@@ -16,10 +16,12 @@
     "@types/react-dom": "^17.0.9",
     "@vlsergey/react-bootstrap-pagination": "^3.0.1",
     "admin-lte": "^3.1.0",
+    "autoprefixer": "^9.8.8",
     "axios": "^0.21.1",
     "class-transformer": "^0.4.0",
     "classnames": "^2.3.1",
     "luxon": "^2.0.1",
+    "postcss": "^7.0.39",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-datepicker": "^4.2.1",
@@ -32,15 +34,23 @@
     "react-select": "^4.3.1",
     "react-table": "^7.7.0",
     "reflect-metadata": "^0.1.13",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "typescript": "^4.3.5",
     "web-vitals": "^1.1.2",
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "PORT=3222 craco start",
+    "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm.cmd run compile",
+    "pretest": "npm.cmd run compile",
+    "posttest": "npm.cmd run lint"
   },
   "eslintConfig": {
     "extends": [
@@ -61,11 +71,12 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "^14.11.2",
     "@types/react-router-dom": "^5.1.8",
     "@types/react-select": "^4.0.17",
     "@types/react-table": "^7.7.2",
-    "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.36",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+    "eslint-plugin-react": "^7.26.1",
+    "gts": "^3.1.0",
+    "typescript": "^4.0.3"
   }
 }

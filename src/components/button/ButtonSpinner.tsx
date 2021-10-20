@@ -37,11 +37,7 @@ const ButtonSpinner: React.FC<AppButtonProps> = ({
   }
 
   return (
-    <Button
-      {...otherProps}
-      variant={theme}
-      disabled={isLoading || disabled}
-    >
+    <Button {...otherProps} variant={theme} disabled={isLoading || disabled}>
       {iconTemplate}
       {children}
       {spinnerTemplate}

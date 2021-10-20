@@ -1,3 +1,3 @@
 export type ResErrorObj = {
-  response: {data: {message: string}}
-}
+  response: {data: {message: string}};
+};

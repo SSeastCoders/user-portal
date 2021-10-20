@@ -1,10 +1,7 @@
+import React from 'react';
 
-import React from 'react'
-
-interface MainMenuBarProps {
-
-}
+interface MainMenuBarProps {}
 
 export const MainMenuBar: React.FC<MainMenuBarProps> = ({}) => {
-    return null;
-}
+  return null;
+};

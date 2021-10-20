@@ -13,7 +13,7 @@ export interface Transaction {
   amount: number;
   description: string;
   type: TransactionType;
-  date: string,
+  date: string;
   succeeded: boolean;
   pending: boolean;
 }

@@ -1,10 +1,10 @@
-import { plainToClass } from "class-transformer";
-import { ACCOUNT_ENDPOINT, BASE_URL, TRANSACTION_ENDPOINT } from "./api";
-import axiosToken from "./axios";
-import { Account } from "./models/Account";
-import { Transaction } from "./models/Transaction";
-import { User } from "./models/User";
-import { PageResponse } from "./responses/PageResponse";
+import {plainToClass} from 'class-transformer';
+import {ACCOUNT_ENDPOINT, BASE_URL, TRANSACTION_ENDPOINT} from './api';
+import axiosToken from './axios';
+import {Account} from './models/Account';
+import {Transaction} from './models/Transaction';
+import {User} from './models/User';
+import {PageResponse} from './responses/PageResponse';
 
 export const getUserById = async (id: string | null) => {
   const response = await axiosToken.get(`${BASE_URL}/users/${id}`);
@@ -20,7 +20,7 @@ export const getAccountByUserId = async (id: string | null) => {
   const accounts: Account[] = plainToClass(
     Account,
     response.data as Object[]
-  ).filter((account) => account.activeStatus === true);
+  ).filter(account => account.activeStatus === true);
   return accounts;
 };
 
@@ -42,7 +42,7 @@ export const getTransactionsByOptions = async (
       fromDate: fromDate,
       toDate: toDate,
       fromAmount: fromAmount,
-      toAmount: toAmount
+      toAmount: toAmount,
     },
   });
   const data: PageResponse<Transaction> = response.data;

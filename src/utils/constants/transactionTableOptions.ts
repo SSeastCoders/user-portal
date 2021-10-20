@@ -1,4 +1,4 @@
 export const TransactionOptions = [
-  { value: "Transactions", label: "Transactions" },
-  { value: "Search", label: "Search" },
+  {value: 'Transactions', label: 'Transactions'},
+  {value: 'Search', label: 'Search'},
 ];

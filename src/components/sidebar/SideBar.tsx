@@ -1,9 +1,7 @@
-import React from 'react'
-import { Link, NavLink } from 'react-router-dom';
-import "./sidebar.css";
-interface SideBarProps {
-
-}
+import React from 'react';
+import {Link, NavLink} from 'react-router-dom';
+import './sidebar.css';
+interface SideBarProps {}
 
 export const SideBar: React.FC<SideBarProps> = ({}) => {
   return (
@@ -26,7 +24,7 @@ export const SideBar: React.FC<SideBarProps> = ({}) => {
             </Link>
           </div>
         </div>
-        <nav className="mt-2" style={{ overflowY: 'hidden' }}>
+        <nav className="mt-2" style={{overflowY: 'hidden'}}>
           <ul
             className="nav nav-pills nav-sidebar flex-column"
             data-widget="treeview"

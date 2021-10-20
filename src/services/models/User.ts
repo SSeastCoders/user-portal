@@ -1,7 +1,7 @@
-import { classToPlain, Expose, Transform, Type } from "class-transformer";
-import { DateTime } from "luxon";
-import "reflect-metadata";
-import { states } from "../../utils/constants/states";
+import {classToPlain, Expose, Transform, Type} from 'class-transformer';
+import {DateTime} from 'luxon';
+import 'reflect-metadata';
+import {states} from '../../utils/constants/states';
 
 export interface Address {
   streetAddress?: string;
@@ -19,7 +19,7 @@ export class User {
   lastName: string;
   @Expose()
   @Type(() => String)
-  @Transform(({ value }) => DateTime.fromISO(value))
+  @Transform(({value}) => DateTime.fromISO(value))
   dob: DateTime;
   @Expose()
   email: string;
@@ -29,7 +29,7 @@ export class User {
   address: Address;
   @Expose()
   @Type(() => String)
-  @Transform(({ value }) => DateTime.fromISO(value))
+  @Transform(({value}) => DateTime.fromISO(value))
   dateJoined: DateTime;
   @Expose()
   activeStatus: boolean;
@@ -39,10 +39,10 @@ export class User {
   public addressToString() {
     if (this.address) {
       return `${this.address.streetAddress}, ${
-        states.find(({ value }) => value === this.address?.state)?.label
+        states.find(({value}) => value === this.address?.state)?.label
       } ${this.address?.zip}`;
     }
-    return "";
+    return '';
   }
 
   public toDto() {

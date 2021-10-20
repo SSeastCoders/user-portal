@@ -1,26 +1,25 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import {useEffect, useRef, useState} from 'react';
+import {Link, useHistory} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux';
+import axios from 'axios';
 import {DateTime} from 'luxon';
-import { BASE_URL } from "../../services/api";
+import {BASE_URL} from '../../services/api';
 import * as ActionTypes from '../../store/action/actiontypes';
-
 
 const UserProfileNav = ({}) => {
   const dropdownRef = useRef(null);
   const history = useHistory();
-  const state = useSelector((state) => state.auth);
+  const state = useSelector(state => state.auth);
   // const {data, isSuccess} = useQuery('user', async () => {await axios.get(`${BASE_URL}/users/${state.id}`, {headers: {"Authorization": state.token}})});
   const [data, setData] = useState({});
-  let user: any = data;
+  const user: any = data;
   const dispatch = useDispatch();
   const [dropdownState, updateDropdownState] = useState({
-    isDropdownOpen: false
+    isDropdownOpen: false,
   });
 
   const toggleDropdown = () => {
-    updateDropdownState({ isDropdownOpen: !dropdownState.isDropdownOpen });
+    updateDropdownState({isDropdownOpen: !dropdownState.isDropdownOpen});
   };
 
   const handleClickOutside = (event: any) => {
@@ -30,33 +29,29 @@ const UserProfileNav = ({}) => {
       //@ts-ignore
       !dropdownRef.current.contains(event.target)
     ) {
-      updateDropdownState({ isDropdownOpen: false });
+      updateDropdownState({isDropdownOpen: false});
     }
   };
 
   const logOut = (event: any) => {
     toggleDropdown();
     event.preventDefault();
-    dispatch({type: ActionTypes.LOGOUT_USER})
+    dispatch({type: ActionTypes.LOGOUT_USER});
     history.push('/login');
   };
 
   const getData = async () => {
-    let data = await axios.get(`${BASE_URL}/users/${state.id}`, {
-      headers: { "Authorization": state.token }
+    const data = await axios.get(`${BASE_URL}/users/${state.id}`, {
+      headers: {Authorization: state.token},
     });
     setData(data.data);
-  }
+  };
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside, false);
-    getData()
+    getData();
     return () => {
-      document.removeEventListener(
-        'mousedown',
-        handleClickOutside,
-        false
-      );
+      document.removeEventListener('mousedown', handleClickOutside, false);
     };
   }, []);
 
@@ -84,7 +79,7 @@ const UserProfileNav = ({}) => {
       <ul className={className}>
         <li className="user-header bg-primary">
           <img
-            src='/img/default-profile.png'
+            src="/img/default-profile.png"
             className="img-circle elevation-2"
             alt="User"
           />
@@ -93,9 +88,7 @@ const UserProfileNav = ({}) => {
             <small>
               <span>Member since </span>
               <span>
-                {DateTime.fromISO(user.dateJoined).toFormat(
-                  'dd LLL yyyy'
-                )}
+                {DateTime.fromISO(user.dateJoined).toFormat('dd LLL yyyy')}
               </span>
             </small>
           </p>

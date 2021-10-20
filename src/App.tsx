@@ -1,13 +1,18 @@
 import React from 'react';
 import './App.css';
-import { Login } from './pages/Login';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { Register } from './pages/Register';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import {Login} from './pages/Login';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import {Register} from './pages/Register';
+import {QueryClient, QueryClientProvider} from 'react-query';
 import PublicRoute from './routes/PublicRoute';
 import PrivateRoute from './routes/PrivateRoute';
-import { DashBoard } from './pages/dashbaord/DashBoard';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import {DashBoard} from './pages/dashbaord/DashBoard';
+import {ReactQueryDevtools} from 'react-query/devtools';
 
 const queryClient = new QueryClient();
 
@@ -30,8 +35,8 @@ function App() {
             <DashBoard></DashBoard>
           </PrivateRoute>
         </Switch>
-      </Router >
-    </QueryClientProvider >
+      </Router>
+    </QueryClientProvider>
   );
 }
 
