@@ -11,6 +11,9 @@ import { AccountDetails } from '../account/accountDetails/AccountDetails';
 import { AccountRegistration } from '../openAccount/AccountRegistration';
 import { OpenAccount } from '../openAccount/OpenAccount';
 import { Profile } from '../profile/Profile';
+import { OpenCard } from '../openCard/OpenCard';
+import { CardRegistration} from '../openCard/CardRegistration';
+
 
 interface DashBoardProps {
 
@@ -32,6 +35,8 @@ export const DashBoard: React.FC<DashBoardProps> = ({ }) => {
           <PrivateRoute exact path="/dashboard/profile"><Profile/></PrivateRoute>
           <PrivateRoute exact path="/dashboard/accountOpening"><OpenAccount></OpenAccount></PrivateRoute>
           <PrivateRoute exact path="/dashboard/accountOpening/accountType"><AccountRegistration></AccountRegistration></PrivateRoute>
+          <PrivateRoute exact path="/dashboard/cardOpening"><OpenCard></OpenCard></PrivateRoute>
+          <PrivateRoute exact path="/dashboard/cardOpening/cardType"><CardRegistration></CardRegistration></PrivateRoute>
           <PrivateRoute exact path="/dashboard/overviewAccounts"><AccountCardList></AccountCardList></PrivateRoute>
           <PrivateRoute exact path="/dashboard/overviewAccounts/overview/account"><AccountDetails></AccountDetails></PrivateRoute>
         </Switch>
