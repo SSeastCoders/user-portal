@@ -91,13 +91,9 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({id}) => {
     []
   );
 
-  const transactions = useMemo(
-    () => {
-      return rest.isSuccess ? data?.content : [];
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data]
-  );
+  const transactions = useMemo(() => {
+    return rest.isSuccess ? data?.content : [];
+  }, [data]);
   const handleSearchClick = () => {
     setSelectVal(TransactionOptions[1]);
     setOpen(!open);

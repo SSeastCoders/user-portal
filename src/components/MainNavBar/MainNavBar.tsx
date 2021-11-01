@@ -10,12 +10,7 @@ export const MainNavBar: React.FC<NavBarProps> = ({}) => {
       {/* Left navbar links */}
       <ul className="navbar-nav">
         <li className="nav-item">
-          <button
-            // onClick={() => toggleMenuSidebar()}
-            type="button"
-            className="nav-link"
-            data-widget="pushmenu"
-          >
+          <button type="button" className="nav-link" data-widget="pushmenu">
             <i className="fas fa-bars" />
           </button>
         </li>
@@ -47,19 +42,6 @@ export const MainNavBar: React.FC<NavBarProps> = ({}) => {
       </form>
       <ul className="navbar-nav ml-auto">
         <UserProfileNav></UserProfileNav>
-        {/* <Messages />
-        <Notifications />
-        <User /> */}
-        {/* <li className="nav-item">
-          <button
-            className="nav-link"
-            data-widget="control-sidebar"
-            data-slide="true"
-            type="button"
-          >
-            <i className="fas fa-th-large" />
-          </button>
-        </li> */}
       </ul>
     </nav>
   );

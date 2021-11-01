@@ -28,7 +28,7 @@ const schema = Yup.object().shape({
   phone: Yup.string().required(),
   address: Yup.string().required(),
   email: Yup.string().email('Must be a valid email').required(),
-  checked: Yup.bool().isTrue('Terms must be chekced')
+  checked: Yup.bool().isTrue('Terms must be chekced'),
 });
 
 export const OpenAccount: React.FC<OpenAccountProps> = ({}) => {
