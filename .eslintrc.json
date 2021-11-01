@@ -8,6 +8,7 @@
     "jest": true
   },
   "rules": {
-    "no-empty-interface": 0
+    "no-empty-interface": 0,
+    "no-empty-pattern": 0
   }
 }

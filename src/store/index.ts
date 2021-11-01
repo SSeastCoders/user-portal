@@ -1,3 +1,4 @@
+/* eslint-disable node/no-extraneous-import */
 import {createStore, combineReducers} from 'redux';
 import authReducer from './reducer/auth';
 
