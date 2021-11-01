@@ -36,6 +36,11 @@ export const MainNavBar: React.FC<NavBarProps> = ({}) => {
             Open a card
           </Link>
         </li>
+        <li className="nav-item d-none d-sm-inline-block">
+          <Link to="/dashboard/loanOpening" className="nav-link">
+            Open a loan
+          </Link>
+        </li>
       </ul>
       <form className="form-inline ml-3">
         <div className="input-group input-group-sm">

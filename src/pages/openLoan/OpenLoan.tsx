@@ -31,7 +31,7 @@ const schema = Yup.object().shape({
   checked: Yup.bool().isTrue("Terms must be checked")
 })
 
-export const OpenCard: React.FC<OpenCardProps> = ({ }) => {
+export const OpenLoan: React.FC<OpenCardProps> = ({ }) => {
   const state = useSelector((state: DefaultRootState) => state.auth);
   const {data, ...result} = useQuery(['user'], async () => {
     return getUserById(state.id!);

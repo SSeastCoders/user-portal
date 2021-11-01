@@ -11,43 +11,45 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axiosToken from '../../services/axios';
 import { ErrorMessage } from '@hookform/error-message';
-import { CardType } from '../../services/models/Card';
+import { LoanType } from '../../services/models/Loan';
 
-interface CardRegistrationProps {
+interface LoanRegistrationProps {
 }
 
 interface FormValues {
-  cardType: string,
-  nickName: string
+  loanType: string,
+  nickName: string,
+  amountLoaned: number
 }
 
 const scehma = Yup.object().shape({
-  cardType: Yup.string().required(),
-  nickName: Yup.string().required()
+  loanType: Yup.string().required(),
+  nickName: Yup.string().required(),
+  amountLoaned: Yup.number().required()
 })
 
-export const CardRegistration: React.FC<CardRegistrationProps> = ({ }) => {
+export const LoanRegistration: React.FC<LoanRegistrationProps> = ({ }) => {
   useDisableBar();
   const history = useHistory();
   const state = useSelector((state) => state.auth);
-  const createCard = useMutation((update: any) => axiosToken.post(`${CARD_ENDPOINT}`, update));
+  const createLoan = useMutation((update: any) => axiosToken.post(`${CARD_ENDPOINT}`, update));
   const {register, handleSubmit, formState: {errors}} = useForm<FormValues>({resolver: yupResolver(scehma)});
   const submitForm = (data: FormValues) => {
     const ids = [Number(state.id)]
     const request = {...data, usersIds: ids}
     console.log(request);
-    createCard.mutate(request);
+    createLoan.mutate(request);
     history.push("/dashboard");
   }
 
   return (
     <div className="content-wrapper">
       <div className="content-header">
-        <h2 className="m-0">Opening Card</h2>
+        <h2 className="m-0">Opening Loan</h2>
       </div>
       <div className="container">
-        <div className="card">
-          <div className="card-body">
+        <div className="loan">
+          <div className="loan-body">
             <div className="progress mb-3">
               <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{ width: "67%" }}></div>
             </div>
@@ -56,28 +58,38 @@ export const CardRegistration: React.FC<CardRegistrationProps> = ({ }) => {
                 <label
                   className="col-sm-2 col-form-label"
                 >
-                  Card type
+                  Loan type
                 </label>
                 <div className="col-sm-10">
-                  <select className="form-control" {...register("cardType")}>
-                    <option value="">Card Types</option>
-                    <option value="CREDIT">Debit</option>
-                    <option value="CREDIT">Credit</option>
+                  <select className="form-control" {...register("loanType")}>
+                    <option value="">Loan Types</option>
+                    <option value="AUTO">Auto</option>
+                    <option value="HOME">Home</option>
+                    <option value="EDUCATION">Education</option>
+                    <option value="BUSINESS">Business</option>
                   </select>
-                  <ErrorMessage className="invalid-feedback d-block" errors={errors} as="span" name="cardType"></ErrorMessage>
+                  <ErrorMessage className="invalid-feedback d-block" errors={errors} as="span" name="loanType"></ErrorMessage>
                 </div>
               </div>
               <div className="form-group row">
                 <label
                   className="col-sm-2 col-form-label"
                 >
-                  Card Nickname
+                  Loan Nickname
                 </label>
                 <InputValidation className="col-sm-10" errors={errors} name="nickName" register={register("nickName")}></InputValidation>
               </div>
+              <div className="form-group row">
+                <label
+                  className="col-sm-2 col-form-label"
+                >
+                  Loan Amount
+                </label>
+                <InputValidation className="col-sm-10" errors={errors} name="amountLoaned" register={register("amountLoaned")}></InputValidation>
+              </div>
               <div className="float-right">
                 <div className="">
-                  <ButtonSpinner isLoading={createCard.isLoading} type="submit" theme="primary">
+                  <ButtonSpinner isLoading={createLoan.isLoading} type="submit" theme="primary">
                     Submit
                   </ButtonSpinner>
                 </div>
