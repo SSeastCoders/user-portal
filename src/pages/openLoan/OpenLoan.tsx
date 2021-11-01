@@ -11,7 +11,7 @@ import { InputValidation } from '../../components/form/InputValidation';
 import { useDisableBar } from '../../hooks/disableBar';
 import { getUserById } from '../../services/services';
 
-interface OpenCardProps {
+interface OpenLoanProps {
 
 }
 
@@ -31,7 +31,7 @@ const schema = Yup.object().shape({
   checked: Yup.bool().isTrue("Terms must be checked")
 })
 
-export const OpenLoan: React.FC<OpenCardProps> = ({ }) => {
+export const OpenLoan: React.FC<OpenLoanProps> = ({ }) => {
   const state = useSelector((state: DefaultRootState) => state.auth);
   const {data, ...result} = useQuery(['user'], async () => {
     return getUserById(state.id!);
@@ -46,12 +46,12 @@ export const OpenLoan: React.FC<OpenCardProps> = ({ }) => {
   useDisableBar();
 
   const nextPage = () => {
-    history.push("/dashboard/cardOpening/cardType");
+    history.push("/dashboard/loanOpening/loanType");
   }
   return (
     <div className="content-wrapper">
       <div className="content-header">
-        <h2>Opening Card</h2>
+        <h2>Opening Loan</h2>
       </div>
       <div className="container">
         <div className="card">

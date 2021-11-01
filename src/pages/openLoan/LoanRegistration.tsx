@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import ButtonSpinner from '../../components/button/ButtonSpinner';
 import { InputValidation } from '../../components/form/InputValidation';
 import { useDisableBar } from '../../hooks/disableBar';
-import { CARD_ENDPOINT } from '../../services/api';
+import { LOAN_ENDPOINT } from '../../services/api';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axiosToken from '../../services/axios';
@@ -32,7 +32,7 @@ export const LoanRegistration: React.FC<LoanRegistrationProps> = ({ }) => {
   useDisableBar();
   const history = useHistory();
   const state = useSelector((state) => state.auth);
-  const createLoan = useMutation((update: any) => axiosToken.post(`${CARD_ENDPOINT}`, update));
+  const createLoan = useMutation((update: any) => axiosToken.post(`${LOAN_ENDPOINT}`, update));
   const {register, handleSubmit, formState: {errors}} = useForm<FormValues>({resolver: yupResolver(scehma)});
   const submitForm = (data: FormValues) => {
     const ids = [Number(state.id)]
