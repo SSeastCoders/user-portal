@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import {ErrorMessage} from '@hookform/error-message';
 import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useEffect} from 'react';

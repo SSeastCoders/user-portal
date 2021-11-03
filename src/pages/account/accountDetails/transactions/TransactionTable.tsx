@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import Pagination from '@vlsergey/react-bootstrap-pagination';
 import React, {useMemo, useReducer, useState} from 'react';
 import {Collapse, Spinner} from 'react-bootstrap';

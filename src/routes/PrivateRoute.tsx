@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import {Redirect, Route, RouteProps} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 

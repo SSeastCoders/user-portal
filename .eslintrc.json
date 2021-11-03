@@ -9,6 +9,7 @@
   },
   "rules": {
     "no-empty-interface": 0,
-    "no-empty-pattern": 0
+    "no-empty-pattern": 0,
+    "no-explicit-any": 0
   }
 }

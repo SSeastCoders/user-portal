@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import React from 'react';
 import {Link} from 'react-router-dom';
 import UserProfileNav from './UserProfileNav';

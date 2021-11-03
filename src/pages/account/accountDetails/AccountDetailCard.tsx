@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {Account} from '../../../services/models/Account';
 
 interface AccountDetailCardProps {

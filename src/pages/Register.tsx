@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Link, useHistory} from 'react-router-dom';

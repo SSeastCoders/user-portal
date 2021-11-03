@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/react-in-jsx-scope */
 import {useEffect, useRef, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
@@ -10,7 +12,6 @@ const UserProfileNav = ({}) => {
   const dropdownRef = useRef(null);
   const history = useHistory();
   const state = useSelector(state => state.auth);
-  // const {data, isSuccess} = useQuery('user', async () => {await axios.get(`${BASE_URL}/users/${state.id}`, {headers: {"Authorization": state.token}})});
   const [data, setData] = useState({});
   const user: any = data;
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const UserProfileNav = ({}) => {
     if (
       dropdownRef &&
       dropdownRef.current &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       !dropdownRef.current.contains(event.target)
     ) {

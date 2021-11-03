@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/jsx-key */
 import React from 'react';
 import BTable, {TableProps} from 'react-bootstrap/Table';
 import {Column, useSortBy, useTable} from 'react-table';

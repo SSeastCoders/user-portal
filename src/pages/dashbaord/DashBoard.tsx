@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import classNames from 'classnames';
 import React, {useState} from 'react';
 import {Navbar, NavLink} from 'react-bootstrap';
-import {Link, Route, Switch} from 'react-router-dom';
+import {Link, Switch} from 'react-router-dom';
 import {MainNavBar} from '../../components/MainNavBar/MainNavBar';
 import {SideBar} from '../../components/sidebar/SideBar';
 import PrivateRoute from '../../routes/PrivateRoute';
-import StateRequiredRoute from '../../routes/StateRequiredRoute';
 import {AccountCardList} from '../account/AccountCardList';
 import {AccountDetails} from '../account/accountDetails/AccountDetails';
 import {AccountRegistration} from '../openAccount/AccountRegistration';

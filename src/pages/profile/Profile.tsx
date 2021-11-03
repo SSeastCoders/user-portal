@@ -1,5 +1,4 @@
-import axios from 'axios';
-import {plainToClass} from 'class-transformer';
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import React from 'react';
 import {
   Col,
@@ -14,9 +13,7 @@ import {useQuery} from 'react-query';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {useDisableBar} from '../../hooks/disableBar';
-import {BASE_URL} from '../../services/api';
 import {getUserById} from '../../services/services';
-import {User} from '../../services/models/User';
 import {ChangeAddress} from './ChangeAddress';
 import {ChangePassword} from './ChangePassword';
 import {PersonalInfoTab} from './PersonalInfoTab';

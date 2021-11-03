@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import {yupResolver} from '@hookform/resolvers/yup';
 import axios from 'axios';
 import React from 'react';
