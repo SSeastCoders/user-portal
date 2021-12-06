@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { AccountsBarContext } from "../pages/dashbaord/DashBoard";
+import { AccountsBarContext } from "../pages/dashboard/DashBoard";
 
 export function useDisableBar() {
   const disableBar = useContext(AccountsBarContext);
